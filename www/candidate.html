@@ -1,0 +1,431 @@
+<!DOCTYPE html> 
+<html> 
+
+<head> 
+<title>Gongwer Election App</title> 
+<meta name="viewport" content="width=device-width, initial-scale=1"> 	    
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-touch-fullscreen" content="yes" />   
+<script src="scripts/jquery-1.9.1.min.js"></script>
+<script src="scripts/jquery.mobile-1.4.2.min.js"></script>
+<script type="text/javascript" src="cordova.js"></script>
+<link rel="stylesheet" href="scripts/jquery.mobile-1.4.2.min.css" />
+<link rel="stylesheet" type="text/css" href="style.css">
+
+<script type="text/javascript" src="ga.js"></script>
+<script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-38636805-24']);
+    _gaq.push(['_trackPageview', 'candidate']);
+</script> 
+
+<script type="text/javascript">
+
+function getUrlVars() {
+    var vars = {};
+    var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
+        vars[key] = value;
+    });
+    return vars;
+}
+
+var id = getUrlVars()["id"];
+var xmlurl = "http://www.gongwer.com/public/ElectionAppData/2020%20Election/Bios/" + getUrlVars()["id"];
+var origin = getUrlVars()["origin"];
+var originid = getUrlVars()["originid"];
+var race = getUrlVars()["race"];
+var distno = getUrlVars()["distno"];
+var distnumber = getUrlVars()["distnumber"];
+
+function getBackUrl()
+    {
+		var backurl = origin + "?id=" + originid + "&race=" + race + "&distno=" + distno + "&distnumber=" + distnumber;
+        return backurl;
+    }
+		
+</script>
+
+<script>
+    
+    //Twitter checker
+    
+    // If Mac//
+    
+    var twitterCheck = function(){
+        
+        appAvailability.check('twitter://', function(availability) {
+                              // availability is either true or false
+                              if(availability) { window.open('twitter://user?screen_name=gongwer', '_system', 'location=no');}
+                              else{window.open('https://twitter.com/gongwer', '_system', 'location=no'); };
+                              });
+    };
+
+//If Android
+
+var ua = navigator.userAgent.toLowerCase();
+var isAndroid = ua.indexOf("android") > -1; //&& ua.indexOf("mobile");
+
+if(isAndroid) {
+    
+    twitterCheck = function(){
+        
+        appAvailability.check('com.twitter.android', function(availability) {
+                              // availability is either true or false
+                              if(availability) {window.open('twitter://user?screen_name=gongwer', '_system', 'location=no');}
+                              else{window.open('https://twitter.com/gongwer', '_system', 'location=no');};
+                              });
+    };
+};
+
+function openBrowser (url) {
+    if (!url) {
+        return;
+    }
+    
+    // turn my url into a scheme/intent url
+    getAvailabilityScheme(url, function (url) {
+                          window.open(url, '_system');
+                          });
+}
+
+function getAvailabilityScheme (url, callback) {
+    var schemeOrPackage;
+    var schemeUrl;
+    
+    // check for appavaialbility plugin
+    if (!window.appAvailability) {
+        callback(url);
+    }
+    
+    // facebook
+//    if (url.indexOf('facebook.com/') !== -1) {
+//        schemeOrPackage = isAndroid ? 'com.facebook.katana' : 'fb://'
+//        schemeUrl = 'fb://profile/' + url.split('facebook.com/')[1];
+//    }
+    
+    // twitter
+    if (url.indexOf('twitter.com/') !== -1) {
+        schemeOrPackage = isAndroid ? null : 'twitter://'
+        schemeUrl = 'twitter://user?screen_name=' + url.split('twitter.com/')[1];
+    }
+    
+    if (schemeOrPackage && schemeUrl) {
+        window.appAvailability.check(schemeOrPackage, function () {
+                                     callback(schemeUrl);
+                                     }, function () {
+                                     callback(url);
+                                     });
+    } else {
+        callback(url);
+    }
+}
+
+    </script>
+
+</head>
+
+<body>
+
+<div data-role="page" style="background-color:#185e93;">
+
+<div id="top_region">
+<center><a href="index.html" data-ajax="false" ><img src="images/gongwer-header-logo-mi.png"></a></center>
+</div>
+<div data-role="content" style="padding:10px; width:95%; margin:0px auto;"><br>
+<center><script type="text/javascript" src="https://g.adspeed.net/ad.php?do=js&zid=64756&oid=13041&wd=-1&ht=-1&target=_blank"></script></center>
+<ul data-role="listview" data-inset="true">
+<li>
+
+<script>
+
+if (window.XMLHttpRequest) {/* code for IE7+, Firefox, Chrome, Opera, Safari */ xmlhttp=new XMLHttpRequest(); }
+else {/* code for IE6, IE5 */ xmlhttp=new ActiveXObject("Microsoft.XMLHTTP"); }
+xmlhttp.open("GET",xmlurl,false);
+xmlhttp.send();
+xmlDoc=xmlhttp.responseXML;  
+var x=xmlDoc.getElementsByTagName("Bio");
+for (i=0;i<x.length;i++)
+  { 
+  document.write("<center>");  
+
+    if (x[i].getElementsByTagName("photo")[0].childNodes[0].nodeValue!="NA") { 
+	  document.write("<img src=\"");
+	  document.write(x[i].getElementsByTagName("photo")[0].childNodes[0].nodeValue);
+	  document.write("\" height=\"150\"><br>");
+	  }
+
+	document.write("<strong>");  
+	document.write(x[i].getElementsByTagName("name")[0].childNodes[0].nodeValue);
+	document.write("</strong></center><br>");	 
+
+
+
+
+var z=x[i].getElementsByTagName("socialmedia");
+for (k=0;k<z.length;k++)
+{
+    if (z[k].getElementsByTagName("sociallink")[0].childNodes[0].nodeValue!="NA") {
+        document.write("<ul data-role=\"listview\" data-inset=\"true\">");
+        
+        if (z[k].getElementsByTagName("socialname")[0].childNodes[0].nodeValue!="Twitter") {
+            document.write("<li><a href=\"#\" onClick=\"window.open('");
+            document.write(z[k].getElementsByTagName("sociallink")[0].childNodes[0].nodeValue);
+            document.write("','_blank', 'EnableViewPortScale=yes');\" data-ajax=\"false\">");
+            document.write(z[k].getElementsByTagName("socialname")[0].childNodes[0].nodeValue);
+            document.write("</a></li>");
+        }
+        
+        else {
+            document.write("<li><a href=\"#\" onclick=\"openBrowser('");
+            document.write(z[k].getElementsByTagName("sociallink")[0].childNodes[0].nodeValue);
+            document.write("')\" >");
+            document.write(z[k].getElementsByTagName("socialname")[0].childNodes[0].nodeValue);
+            document.write("</a></li>");
+        }
+        
+        document.write("</ul>");
+
+    }
+}
+
+
+
+
+
+	var w=x[i].getElementsByTagName("candidateinfo");
+	for (h=0;h<w.length;h++)
+		{
+		document.write("<ul data-role=\"listview\" data-inset=\"true\"><li>");
+		if (w[h].getElementsByTagName("race")[0].childNodes[0].nodeValue!="NA") {
+			document.write("<br><strong>Race: </strong>");
+			document.write(w[h].getElementsByTagName("race")[0].childNodes[0].nodeValue);    
+		}
+
+		if (w[h].getElementsByTagName("description")[0].childNodes[0].nodeValue!="NA") {		
+			document.write("<br><strong>Description: </strong>");
+			document.write(w[h].getElementsByTagName("description")[0].childNodes[0].nodeValue);    	
+		}
+		
+		if (w[h].getElementsByTagName("residence")[0].childNodes[0].nodeValue!="NA") {		
+			document.write("<br><strong>Residence: </strong>");
+			document.write(w[h].getElementsByTagName("residence")[0].childNodes[0].nodeValue);    						
+		}
+
+		if (w[h].getElementsByTagName("committeename")[0].childNodes[0].nodeValue!="NA") {		
+			document.write("<br><strong>Committee Name: </strong>");  
+			document.write(w[h].getElementsByTagName("committeename")[0].childNodes[0].nodeValue);       
+		}
+
+		if (w[h].getElementsByTagName("campaignaddress")[0].childNodes[0].nodeValue!="NA") {						
+			document.write("<br><strong>Campaign Address: </strong>");  
+			document.write(w[h].getElementsByTagName("campaignaddress")[0].childNodes[0].nodeValue);       
+		}
+
+		if (w[h].getElementsByTagName("phone")[0].childNodes[0].nodeValue!="NA") {						
+			document.write("<br><strong>Phone: </strong>");  	
+			document.write(w[h].getElementsByTagName("phone")[0].childNodes[0].nodeValue);       
+		}
+		
+		document.write("<ul data-role=\"listview\" data-inset=\"true\">");
+
+		if (w[h].getElementsByTagName("phone")[0].childNodes[0].nodeValue!="NA") {						
+			document.write("<li><a href=\"mailto:");		
+			document.write(w[h].getElementsByTagName("email")[0].childNodes[0].nodeValue);               
+			document.write("\">Email</a></li>");  		  
+		}
+
+		if (w[h].getElementsByTagName("website")[0].childNodes[0].nodeValue!="NA") {								
+			document.write("<li><a href=\"#\" onClick=\"window.open('");
+			document.write(w[h].getElementsByTagName("website")[0].childNodes[0].nodeValue);               
+			document.write("','_blank', 'EnableViewPortScale=yes');\" data-ajax=\"false\">Website</a></li>");
+		}
+
+        if (w[h].getElementsByTagName("financelink")[0].childNodes[0].nodeValue!="NA") {
+            document.write("<li><a href=\"#\" onClick=\"window.open('");
+            document.write(w[h].getElementsByTagName("financelink")[0].childNodes[0].nodeValue);
+            document.write("','_blank', 'EnableViewPortScale=yes');\" data-ajax=\"false\">Campaign Finance</a></li>");
+        }
+
+		document.write("</ul>");
+			
+		if (w[h].getElementsByTagName("endorsements")[0].childNodes[0].nodeValue!="NA") {
+			document.write("<br> <strong>Endorsements: </strong>");
+			document.write(w[h].getElementsByTagName("endorsements")[0].childNodes[0].nodeValue);                     
+		}
+
+		if (w[h].getElementsByTagName("primaryvote")[0].childNodes[0].nodeValue!="NA") { 
+			document.write("<br><strong>Primary Election: </strong>");  
+			document.write(w[h].getElementsByTagName("primaryvote")[0].childNodes[0].nodeValue);    
+			if (w[h].getElementsByTagName("primarywin")[0].childNodes[0].nodeValue=="Yes") { document.write(" <span style=\"color:#089508\">&#x2713;</span>"); }				
+			document.write("<br>");	  
+			}
+		  			  				
+		document.write("</li></ul>");	
+		document.write("<br><br>");				
+		}  		
+      
+  if (x[i].getElementsByTagName("chamber")[0].childNodes[0].nodeValue!="NA") 
+  	  { 	  
+	  document.write("<br><strong>Current Office: </strong>");  
+	  document.write(x[i].getElementsByTagName("chamber")[0].childNodes[0].nodeValue);                     
+	  }
+
+  if (x[i].getElementsByTagName("currentdistrictmap")[0].childNodes[0].nodeValue!="NA") 
+	{ 
+	  document.write("<ul data-role=\"listview\" data-inset=\"true\"><li><a href=\"");
+	  document.write(x[i].getElementsByTagName("currentdistrictmap")[0].childNodes[0].nodeValue);               
+	  document.write("\">District Map</a></li></ul>");
+	}					
+
+	  if (x[i].getElementsByTagName("currentresidence")[0].childNodes[0].nodeValue!="NA") 
+	  	{ 
+		  document.write("<br> <strong>Residence: </strong>");  
+		  document.write(x[i].getElementsByTagName("currentresidence")[0].childNodes[0].nodeValue);                     	
+		}
+			  
+	  if (x[i].getElementsByTagName("currentterms")[0].childNodes[0].nodeValue!="NA") 
+	    { 
+		  document.write("<br> <strong>Terms: </strong>");  
+		  document.write(x[i].getElementsByTagName("currentterms")[0].childNodes[0].nodeValue);                     	
+		}
+
+	  if (x[i].getElementsByTagName("currentphone")[0].childNodes[0].nodeValue!="NA") 
+	    { 
+		  document.write("<br> <strong>Phone: </strong>");  
+		  document.write(x[i].getElementsByTagName("currentphone")[0].childNodes[0].nodeValue);                     	
+		}
+
+	  document.write("<ul data-role=\"listview\" data-inset=\"true\">");
+	  
+	  if (x[i].getElementsByTagName("currentemail")[0].childNodes[0].nodeValue!="NA") 
+	    { 
+		  document.write("<li><a href=\"mailto:");
+		  document.write(x[i].getElementsByTagName("currentemail")[0].childNodes[0].nodeValue);                     	
+		  document.write("\">Email</a></li>");  		  
+		}
+
+	  if (x[i].getElementsByTagName("currentwebsite")[0].childNodes[0].nodeValue!="NA") 
+	    { 	           
+          document.write("<li><a href=\"#\" onClick=\"window.open('");
+          document.write(x[i].getElementsByTagName("currentwebsite")[0].childNodes[0].nodeValue);
+          document.write("','_blank', 'EnableViewPortScale=yes');\" data-ajax=\"false\">Website</a></li>");
+		}	
+
+	  document.write("</ul>");			
+	  document.write("<br><br>");    
+		  
+  //document.write("<br><strong>Personal Biography</strong><br><br>");  
+  
+	if (x[i].getElementsByTagName("mailingaddress")[0].childNodes[0].nodeValue!="NA") {								
+	  document.write("<strong>Mail Address: </strong>");  				 
+	  document.write(x[i].getElementsByTagName("mailingaddress")[0].childNodes[0].nodeValue);                     
+	}
+	
+	if (x[i].getElementsByTagName("birth")[0].childNodes[0].nodeValue!="NA") {										
+	  document.write("<br><strong>Birth: </strong>");  
+	  document.write(x[i].getElementsByTagName("birth")[0].childNodes[0].nodeValue);                     
+	}
+	
+//	if (x[i].getElementsByTagName("gender")[0].childNodes[0].nodeValue!="NA") {										
+//	  document.write("<br><strong>Gender: </strong>");  
+//	  document.write(x[i].getElementsByTagName("gender")[0].childNodes[0].nodeValue);                     
+//	}
+	
+	if (x[i].getElementsByTagName("maritalstatus")[0].childNodes[0].nodeValue!="NA") {										
+	  document.write("<br><strong>Marital Status: </strong>");  
+	  document.write(x[i].getElementsByTagName("maritalstatus")[0].childNodes[0].nodeValue);                       
+	}
+
+	if (x[i].getElementsByTagName("spouse")[0].childNodes[0].nodeValue!="NA") { 
+	  document.write("<br><strong>Spouse: </strong>");  
+	  document.write(x[i].getElementsByTagName("spouse")[0].childNodes[0].nodeValue);                       
+	}
+	
+	if (x[i].getElementsByTagName("children")[0].childNodes[0].nodeValue!="NA") { 
+	  document.write("<br><strong>Children: </strong>");  
+	  document.write(x[i].getElementsByTagName("children")[0].childNodes[0].nodeValue);                       
+	}
+
+	if (x[i].getElementsByTagName("education")[0].childNodes[0].nodeValue!="NA") {									
+	  document.write("<br><strong>Education: </strong>");  
+	  document.write(x[i].getElementsByTagName("education")[0].childNodes[0].nodeValue);                       
+	}
+
+  if (x[i].getElementsByTagName("work")[0].childNodes[0].nodeValue!="NA") { 
+	  document.write("<br><strong>Work: </strong>");  
+	  document.write(x[i].getElementsByTagName("work")[0].childNodes[0].nodeValue);                         
+	}	
+
+  if (x[i].getElementsByTagName("politics")[0].childNodes[0].nodeValue!="NA") { 
+	  document.write("<br><strong>Politics: </strong>");  
+	  document.write(x[i].getElementsByTagName("politics")[0].childNodes[0].nodeValue);                         
+	}
+	
+  if (x[i].getElementsByTagName("community")[0].childNodes[0].nodeValue!="NA") { 
+	  document.write("<br><strong>Community: </strong>");  
+	  document.write(x[i].getElementsByTagName("community")[0].childNodes[0].nodeValue);                         
+	}
+		
+  if (x[i].getElementsByTagName("religion")[0].childNodes[0].nodeValue!="NA") { 
+	  document.write("<br><strong>Religion: </strong>");  
+	  document.write(x[i].getElementsByTagName("religion")[0].childNodes[0].nodeValue);                         
+	}
+
+  if (x[i].getElementsByTagName("other")[0].childNodes[0].nodeValue!="NA") { 
+	  document.write("<br><br><strong>Other Elected Offices: </strong>");  
+	  document.write(x[i].getElementsByTagName("other")[0].childNodes[0].nodeValue);                       
+	}
+	
+	var y=x[i].getElementsByTagName("election");
+	for (j=0;j<y.length;j++)
+		{
+		if (y[j].getElementsByTagName("electionrace")[0].childNodes[0].nodeValue!="NA") 
+			{ 
+			document.write("<br><br><strong>Election: </strong>");  
+			document.write(y[j].getElementsByTagName("electionrace")[0].childNodes[0].nodeValue);    
+			
+			if (y[j].getElementsByTagName("genvote")[0].childNodes[0].nodeValue!="NA") { 
+				document.write("<br><strong>General Election: </strong>");  
+				document.write(y[j].getElementsByTagName("genvote")[0].childNodes[0].nodeValue);    
+				if (y[j].getElementsByTagName("genwin")[0].childNodes[0].nodeValue=="Yes") { document.write(" <span style=\"color:#089508\">&#x2713;</span>"); }
+				}
+
+			if (y[j].getElementsByTagName("primvote")[0].childNodes[0].nodeValue!="NA") { 
+				document.write("<br><strong>Primary Election: </strong>");  
+				document.write(y[j].getElementsByTagName("primvote")[0].childNodes[0].nodeValue);    
+				if (y[j].getElementsByTagName("primwin")[0].childNodes[0].nodeValue=="Yes") { document.write(" <span style=\"color:#089508\">&#x2713;</span>"); }				
+				}
+				
+			}
+		}
+
+  }
+	
+</script>   
+                  
+</li>
+</ul>
+
+<a href="javascript:document.location.href=getBackUrl();" data-ajax="false" data-role="button" data-theme="b">Back to Candidates</a></p>		
+
+</div><!-- /content -->
+
+<div id="copyright">Copyright Gongwer News Service, Inc. All Rights Reserved.</div>
+	
+	<div data-role="footer" class="nav-glyphish-example" data-id="foo1" data-position="fixed" >
+		<div data-role="navbar" class="nav-glyphish-example" data-grid="d">
+		<center><ul>
+			<li><a href="index.html" id="home" data-icon="custom" data-ajax="false" data-theme="b">Home</a></li>
+			<li><a href="contact.html" id="email" data-icon="custom" data-ajax="false" data-theme="b">Contact</a></li>
+			<li><a href="about.html" id="about" data-icon="custom" data-ajax="false" data-theme="b">About</a></li>            
+			<li><a href="search.html" id="search" data-icon="custom" data-ajax="false" data-theme="b">Search</a></li>
+			<li><a href="social.html" id="social" data-icon="custom" data-ajax="false" data-theme="b">Social</a></li>
+   		</ul></center>
+		</div>                
+    </div><!-- /footer -->
+
+    
+</div><!-- /page -->
+
+</body>
+</html>

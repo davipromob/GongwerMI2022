@@ -1,0 +1,28 @@
+<?xml version='1.0' encoding='utf-8'?>
+<widget id="com.gongwer.mi2022" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+    <name>2022GongerMIApple</name>
+    <description>Sample Apache Cordova App</description>
+    <author email="dev@cordova.apache.org" href="https://cordova.apache.org">
+        Apache Cordova Team
+    </author>
+    <content src="index.html" />
+    <allow-intent href="http://*/*" />
+    <allow-intent href="https://*/*" />
+	<access origin="*.pushwoosh.com" />
+    <access origin="*" />
+	
+	        <preference name="allowFileAccessFromFileURLs" value="true" />
+        <preference name="allowUniversalAccessFromFileURLs" value="true" />
+        <preference name="AllowUntrustedCerts" value="true" />
+        <preference name="InterceptRemoteRequests" value="all" />
+
+     <feature name="CDVWKWebViewFileXhr">
+        <param name="ios-package" value="CDVWKWebViewFileXhr" />
+        <param name="onload" value="true" />
+    </feature>
+    <feature name="WKWebViewXHRFix">
+        <param name="ios-package" value="WKWebViewXHRFix" />
+        <param name="onload" value="true" />
+    </feature>
+	
+</widget>

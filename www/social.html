@@ -1,0 +1,163 @@
+<!DOCTYPE html> 
+<html> 
+
+<head> 
+<title>Gongwer Election App: Social</title> 
+<meta name="viewport" content="width=device-width, initial-scale=1"> 	    
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-touch-fullscreen" content="yes" />   
+<script src="scripts/jquery-1.9.1.min.js"></script>
+<script src="scripts/jquery.mobile-1.4.2.min.js"></script>
+<script type="text/javascript" src="cordova.js"></script>
+<link rel="stylesheet" href="scripts/jquery.mobile-1.4.2.min.css" />
+<link rel="stylesheet" type="text/css" href="style.css">
+
+<script type="text/javascript" src="ga.js"></script>
+<script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-38636805-24']);
+    _gaq.push(['_trackPageview', 'social']);
+</script> 
+
+</head> 
+
+<body>
+
+<div data-role="page" style="background-color:#185e93;">
+
+<div id="top_region">
+<center><a href="index.html" data-ajax="false" ><img src="images/gongwer-header-logo-mi.png" border="0"></a></center>
+</div>
+
+<div data-role="content">	
+
+<br>
+
+<center><script type="text/javascript" src="https://g.adspeed.net/ad.php?do=js&zid=64756&oid=13041&wd=-1&ht=-1&target=_blank"></script></center>
+
+<div class="bar"><center>
+<img src="images/icon-social.png">
+</center></div>
+
+<br><br>
+
+<div style="background-color:#ffffff; width:90%; margin:0px auto; color:#000000; text-shadow:none; padding:10px">
+
+<center>
+
+<br><br>
+
+<script>
+    
+    //Twitter checker
+    
+    // If Mac//
+    
+    var twitterCheck = function(){
+        
+        appAvailability.check('twitter://', function(availability) {
+                              // availability is either true or false
+                              if(availability) { window.open('twitter://user?screen_name=GongwerMichigan', '_system', 'location=no');}
+                              else{window.open('https://twitter.com/GongwerMichigan', '_system', 'location=no'); };
+                              });
+    };
+
+//If Android
+
+var ua = navigator.userAgent.toLowerCase();
+var isAndroid = ua.indexOf("android") > -1; //&& ua.indexOf("mobile");
+
+if(isAndroid) {
+    
+    twitterCheck = function(){
+        
+        appAvailability.check('com.twitter.android', function(availability) {
+                              // availability is either true or false
+                              if(availability) {window.open('twitter://user?screen_name=GongwerMichigan', '_system', 'location=no');}
+                              else{window.open('https://twitter.com/GongwerMichigan', '_system', 'location=no');};
+                              });
+    };
+};
+
+function openBrowser (url) {
+    if (!url) {
+        return;
+    }
+    
+    // turn my url into a scheme/intent url
+    getAvailabilityScheme(url, function (url) {
+                          window.open(url, '_system');
+                          });
+}
+
+function getAvailabilityScheme (url, callback) {
+    var schemeOrPackage;
+    var schemeUrl;
+    
+    // check for appavaialbility plugin
+    if (!window.appAvailability) {
+        callback(url);
+    }
+    
+    // facebook
+    if (url.indexOf('facebook.com/') !== -1) {
+        schemeOrPackage = isAndroid ? 'com.facebook.katana' : 'fb://'
+        schemeUrl = 'fb://profile/' + url.split('facebook.com/')[1];
+    }
+    
+    // twitter
+    if (url.indexOf('twitter.com/') !== -1) {
+        schemeOrPackage = isAndroid ? null : 'twitter://'
+        schemeUrl = 'twitter://user?screen_name=' + url.split('twitter.com/')[1];
+    }
+    
+    if (schemeOrPackage && schemeUrl) {
+        window.appAvailability.check(schemeOrPackage, function () {
+                                     callback(schemeUrl);
+                                     }, function () {
+                                     callback(url);
+                                     });
+    } else {
+        callback(url);
+    }
+}
+
+</script>
+
+<a href="#" onclick="openBrowser('https://twitter.com/GongwerMichigan')" ><img src="images/twitter.png" width="250"></a><br><br>
+
+<a href="#" onclick="openBrowser('https://www.facebook.com/gongwermi')" ><img src="images/facebooklong.png" width="250"></a><br><br>
+
+<!--
+<a class="twitter-timeline" href="https://twitter.com/GongwerMichigan" data-widget-id="474197591685476352">Tweets by @GongwerMichigan</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+<br><br>
+!-->
+
+</center>
+
+</div>
+
+<br><br>
+
+</div><!-- /content -->    
+       
+<div id="copyright">Copyright Gongwer News Service, Inc. All Rights Reserved.</div>
+       
+	<div data-role="footer" class="nav-glyphish-example" data-id="foo1" data-position="fixed" >
+		<div data-role="navbar" class="nav-glyphish-example" data-grid="d">
+		<center><ul>
+			<li><a href="index.html" id="home" data-icon="custom" data-ajax="false" data-theme="b">Home</a></li>
+			<li><a href="contact.html" id="email" data-icon="custom" data-ajax="false" data-theme="b">Contact</a></li>
+			<li><a href="about.html" id="about" data-icon="custom" data-ajax="false" data-theme="b">About</a></li>            
+			<li><a href="search.html" id="search" data-icon="custom" data-ajax="false" data-theme="b">Search</a></li>            
+			<li><a href="social.html" id="social" data-icon="custom" data-ajax="false" data-theme="b">Social</a></li>            
+   		</ul></center>
+		</div>                
+    </div><!-- /footer -->
+
+    
+</div><!-- /page -->
+
+</body>
+</html>

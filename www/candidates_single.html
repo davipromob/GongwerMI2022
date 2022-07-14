@@ -1,0 +1,167 @@
+<!DOCTYPE html> 
+<html> 
+
+<head> 
+<title>Gongwer Election App</title> 
+<meta name="viewport" content="width=device-width, initial-scale=1"> 	    
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-touch-fullscreen" content="yes" />   
+<script src="scripts/jquery-1.9.1.min.js"></script>
+<script src="scripts/jquery.mobile-1.4.2.min.js"></script>
+<script type="text/javascript" src="cordova.js"></script>
+<link rel="stylesheet" href="scripts/jquery.mobile-1.4.2.min.css" />
+<link rel="stylesheet" type="text/css" href="style.css">
+
+<script type="text/javascript" src="ga.js"></script>
+<script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-38636805-24']);
+    _gaq.push(['_trackPageview', 'candidates-single']);
+</script> 
+
+<script type="text/javascript">
+
+function getUrlVars() {
+    var vars = {};
+    var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
+        vars[key] = value;
+    });
+    return vars;
+}
+
+var id = getUrlVars()["id"];
+var race = getUrlVars()["race"];
+var xmlurl = "http://www.gongwer.com/public/ElectionAppData/2020%20Election/RaceListing/" + getUrlVars()["race"] + "/" + getUrlVars()["id"];
+
+function getBackUrl()
+    {
+		if (race == "General") {	var backurl = "generalelections.html"; return backurl; }
+		else if (race == "Primary") {	var backurl = "primaryelections.html"; return backurl; }		
+    }
+	
+</script>
+
+<style>.ui-overlay-a, .ui-page-theme-a, .ui-page-theme-a .ui-panel-wrapper { text-shadow:none; }</style>
+</head> 
+
+<body>
+
+<div data-role="page" style="background-color:#185e93;">
+<div id="top_region"><center><a href="index.html" data-ajax="false" ><img src="images/gongwer-header-logo-mi.png"></a></center></div>
+<div data-role="content" style="padding:10px; width:95%; margin:0px auto;"><br>
+<center><script type="text/javascript" src="https://g.adspeed.net/ad.php?do=js&zid=64756&oid=13041&wd=-1&ht=-1&target=_blank"></script></center>
+<h1 align="center">Candidates</h1>
+<div style="width:200px;margin:0px auto;"><a href="javascript:history.go(0);" data-role="button">Refresh</a></div>
+
+<script>
+    if (window.XMLHttpRequest) {/* code for IE7+, Firefox, Chrome, Opera, Safari */ xmlhttp=new XMLHttpRequest(); }
+    else {/* code for IE6, IE5 */ xmlhttp=new ActiveXObject("Microsoft.XMLHTTP"); }
+    xmlhttp.open("GET",xmlurl,false);
+    xmlhttp.send();
+    xmlDoc=xmlhttp.responseXML;
+    
+    var b=xmlDoc.getElementsByTagName("dist");
+    for (a=0;a<b.length;a++)
+    {
+        
+        
+        if (b[a].getElementsByTagName("description")[0].childNodes[0].nodeValue!="NA") {
+            document.write("<strong>");
+            document.write(b[a].getElementsByTagName("description")[0].childNodes[0].nodeValue);
+            document.write("</strong><br><br>");
+        }
+        
+        if (b[a].getElementsByTagName("percentvote")[0].childNodes[0].nodeValue!="NA") {
+            document.write("<br><br><strong><span style='font-size:12px;'>Percent of Precincts Reporting:</strong> ");
+            document.write(b[a].getElementsByTagName("percentvote")[0].childNodes[0].nodeValue);
+            document.write("%</span><br>");
+        }
+        
+        if (b[a].getElementsByTagName("timestamp")[0].childNodes[0].nodeValue!="NA") {
+            document.write(" <br><em>(Updated ");
+            document.write(b[a].getElementsByTagName("timestamp")[0].childNodes[0].nodeValue);
+            document.write(")<br></em>");
+        }
+        
+        
+        
+        
+        var w=b[a].getElementsByTagName("candidate");
+        for (h=0;h<w.length;h++)
+        {
+            if (w[h].getElementsByTagName("name")[0].childNodes[0].nodeValue=="none" || w[h].getElementsByTagName("name")[0].childNodes[0].nodeValue=="NA") { document.write("<br><center>There are no candidates at this time.</center><br><br>"); }
+            
+            else {
+                
+                
+                document.write("<ul data-inset=\"true\" data-role=\"listview\"><li><center><a data-ajax=\"false\" style=\"text-decoration:none\" href=\"candidate.html?id=");
+                document.write(w[h].getElementsByTagName("nameid")[0].childNodes[0].nodeValue);
+                document.write(".xml&origin=candidates_single.html&originid=");
+                document.write(id);
+                document.write("&race=");
+                document.write(race);
+                document.write("\">");
+                
+                document.write(w[h].getElementsByTagName("name")[0].childNodes[0].nodeValue);
+
+                if (w[h].getElementsByTagName("party")[0].childNodes[0].nodeValue!="NA") {
+                              document.write(" (");
+                              document.write(w[h].getElementsByTagName("party")[0].childNodes[0].nodeValue);
+                              document.write(") ");
+                              }
+                
+                if (w[h].getElementsByTagName("incumbent")[0].childNodes[0].nodeValue=="Yes") {
+                    document.write("<em> (Inc.)</em>");
+                }
+                
+                if (w[h].getElementsByTagName("win")[0].childNodes[0].nodeValue=="Yes") {
+                    document.write("<span style=\"color:#089508\"> - ");
+                    document.write(w[h].getElementsByTagName("vote")[0].childNodes[0].nodeValue);
+                    document.write(" (");
+                    document.write(w[h].getElementsByTagName("percent")[0].childNodes[0].nodeValue);
+                    document.write("%) &#x2713;");
+                    document.write("</span>");													
+                }
+                
+                else if (w[h].getElementsByTagName("vote")[0].childNodes[0].nodeValue!="NA") {			
+                    document.write(" - ");								
+                    document.write(w[h].getElementsByTagName("vote")[0].childNodes[0].nodeValue);				
+                    document.write(" (");						
+                    document.write(w[h].getElementsByTagName("percent")[0].childNodes[0].nodeValue);								
+                    document.write("%)");										
+                }		
+                
+                document.write("</center></a></li></ul>");		
+            }
+        }
+        
+        
+        
+        
+    }
+
+
+    </script>
+
+<a href="javascript:document.location.href=getBackUrl();" data-ajax="false" data-role="button" data-theme="b">Back to Elections</a></p>
+
+</div><!-- /content -->
+
+<div id="copyright">Copyright Gongwer News Service, Inc. All Rights Reserved.</div>
+
+	<div data-role="footer" class="nav-glyphish-example" data-id="foo1" data-position="fixed" >
+		<div data-role="navbar" class="nav-glyphish-example" data-grid="d">
+		<center><ul>
+			<li><a href="index.html" id="home" data-icon="custom" data-ajax="false" data-theme="b">Home</a></li>
+			<li><a href="contact.html" id="email" data-icon="custom" data-ajax="false" data-theme="b">Contact</a></li>
+			<li><a href="about.html" id="about" data-icon="custom" data-ajax="false" data-theme="b">About</a></li>
+			<li><a href="search.html" id="search" data-icon="custom" data-ajax="false" data-theme="b">Search</a></li>
+			<li><a href="social.html" id="social" data-icon="custom" data-ajax="false" data-theme="b">Social</a></li>
+   		</ul></center>
+		</div>                
+    </div><!-- /footer -->
+    
+</div><!-- /page -->
+
+</body>
+</html>

@@ -1,0 +1,87 @@
+<!DOCTYPE html> 
+<html> 
+
+<head> 
+<title>Gongwer Election App: About</title> 
+<meta name="viewport" content="width=device-width, initial-scale=1"> 	    
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-touch-fullscreen" content="yes" />   
+<script src="scripts/jquery-1.9.1.min.js"></script>
+<script src="scripts/jquery.mobile-1.4.2.min.js"></script>
+<script type="text/javascript" src="cordova.js"></script>
+<link rel="stylesheet" href="scripts/jquery.mobile-1.4.2.min.css" />
+<link rel="stylesheet" type="text/css" href="style.css">
+
+<script type="text/javascript" src="ga.js"></script>
+<script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-38636805-24']);
+    _gaq.push(['_trackPageview', 'analysis-about']);
+</script> 
+
+</head> 
+
+<body>
+
+<div data-role="page" style="background-color:#185e93;">
+
+<div id="top_region">
+<center><a href="index.html" data-ajax="false" ><img src="images/gongwer-header-logo-mi.png" border="0"></a></center>
+</div>
+
+<div data-role="content">	
+
+<br>
+
+<center><script type="text/javascript" src="https://g.adspeed.net/ad.php?do=js&zid=64756&oid=13041&wd=-1&ht=-1&target=_blank"></script></center>
+
+<div class="bar"><center>
+<img src="images/icon-about.png">
+</center></div>
+
+<br><br>
+
+<div class="contentbox" >
+
+<script>
+if (window.XMLHttpRequest) {/* code for IE7+, Firefox, Chrome, Opera, Safari */ xmlhttp=new XMLHttpRequest(); }
+else {/* code for IE6, IE5 */ xmlhttp=new ActiveXObject("Microsoft.XMLHTTP"); }
+xmlhttp.open("GET","http://www.gongwer.com/public/ElectionAppData/2020%20Election/about.xml",false);
+xmlhttp.send();
+xmlDoc=xmlhttp.responseXML; 
+
+var x=xmlDoc.getElementsByTagName("about");
+for (i=0;i<x.length;i++)
+{
+
+	var xmldate = x[i].getElementsByTagName("abouttext")[0].childNodes[0].nodeValue;
+	document.write(xmldate);
+	document.write("<br><br>");
+	
+}
+
+</script>
+
+</div>
+
+</div>
+
+
+<div id="copyright">Copyright Gongwer News Service, Inc. All Rights Reserved.</div>
+	
+	<div data-role="footer" class="nav-glyphish-example" data-id="foo1" data-position="fixed" >
+		<div data-role="navbar" class="nav-glyphish-example" data-grid="d">
+		<center><ul>
+			<li><a href="index.html" id="home" data-icon="custom" data-ajax="false" data-theme="b">Home</a></li>
+			<li><a href="contact.html" id="email" data-icon="custom" data-ajax="false" data-theme="b">Contact</a></li>
+			<li><a href="about.html" id="about" data-icon="custom" data-ajax="false" data-theme="b">About</a></li>            
+			<li><a href="search.html" id="search" data-icon="custom" data-ajax="false" data-theme="b">Search</a></li>
+			<li><a href="social.html" id="social" data-icon="custom" data-ajax="false" data-theme="b">Social</a></li>
+   		</ul></center>
+		</div>                
+    </div><!-- /footer -->
+    
+</div><!-- /page -->
+
+</body>
+</html>

@@ -1,0 +1,212 @@
+<!DOCTYPE html> 
+<html> 
+
+<head> 
+<title>Gongwer Election App</title> 
+<meta name="viewport" content="width=device-width, initial-scale=1"> 	    
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-touch-fullscreen" content="yes" />   
+<script src="scripts/jquery-1.9.1.min.js"></script>
+<script src="scripts/jquery.mobile-1.4.2.min.js"></script>
+<script type="text/javascript" src="cordova.js"></script>
+<link rel="stylesheet" href="scripts/jquery.mobile-1.4.2.min.css" />
+<link rel="stylesheet" type="text/css" href="style.css">
+
+<script type="text/javascript" src="ga.js"></script>
+<script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-38636805-24']);
+    _gaq.push(['_trackPageview', 'candidates']);
+</script> 
+
+<script type="text/javascript">
+
+function getUrlVars() {
+    var vars = {};
+    var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
+        vars[key] = value;
+    });
+    return vars;
+}
+
+var id = getUrlVars()["id"];
+var race = getUrlVars()["race"];
+var distno = getUrlVars()["distno"];
+var distnumber = getUrlVars()["distnumber"];
+var xmlurl = "http://www.gongwer.com/public/ElectionAppData/2020%20Election/RaceListing/" + getUrlVars()["race"] + "/" + getUrlVars()["id"];
+//alert(xmlurl);
+
+function getBackUrl()
+    {
+		if (race == "General") {	var backurl = "generalelections.html"; return backurl; }
+		else if (race == "Primary") {	var backurl = "primaryelections.html"; return backurl; }		
+    }
+
+</script>
+
+<script>
+  function testSp()
+  {
+//    setTimeout(function(){$.mobile.silentScroll(1000);}, 1000);
+
+  $('html, body').animate({
+  scrollTop: $('#' + distnumber).offset().top
+  });
+
+  }
+//  window.onload=testSp;
+  
+  
+</script>
+
+</head> 
+
+<body onload="testSp()">
+
+<div data-role="page" style="background-color:#185e93;">
+<div id="top_region"><center><a href="index.html" data-ajax="false" ><img src="images/gongwer-header-logo-mi.png"></a></center></div>
+<div data-role="content" style="padding:10px; width:95%; margin:0px auto;"><br>
+<center><script type="text/javascript" src="https://g.adspeed.net/ad.php?do=js&zid=64756&oid=13041&wd=-1&ht=-1&target=_blank"></script></center>
+<h1 align="center">Candidates</h1>
+
+<div style="width:200px;margin:0px auto;"><a id=btn href=# data-role=button> Open / Close All</a></div>
+<div style="width:200px;margin:0px auto;"><a href="javascript:history.go(0);" data-role="button">Refresh</a></div>
+<script>$("#btn").bind ("click", function (event) { $("h3.ui-collapsible-heading").trigger ("click"); });</script>
+
+<ul data-inset="true" data-role="listview">
+
+<script>
+if (window.XMLHttpRequest) {/* code for IE7+, Firefox, Chrome, Opera, Safari */ xmlhttp=new XMLHttpRequest(); }
+else {/* code for IE6, IE5 */ xmlhttp=new ActiveXObject("Microsoft.XMLHTTP"); }
+xmlhttp.open("GET",xmlurl,false);
+xmlhttp.send();
+xmlDoc=xmlhttp.responseXML; 
+var w=xmlDoc.getElementsByTagName("dist");
+for (h=0;h<w.length;h++)
+  { 
+  	document.write("<div id=\"");
+	document.write(w[h].getElementsByTagName("distnumber")[0].childNodes[0].nodeValue);
+  	document.write("\"></div>");
+  	document.write("<div data-role=\"collapsible\" class=\"openMe\"><h3>");
+	document.write(w[h].getElementsByTagName("distno")[0].childNodes[0].nodeValue);
+  	document.write("</h3>");
+	if (w[h].getElementsByTagName("description")[0].childNodes[0].nodeValue!="NA") { document.write(w[h].getElementsByTagName("description")[0].childNodes[0].nodeValue); }
+
+	if (w[h].getElementsByTagName("percentvote")[0].childNodes[0].nodeValue!="NA") { 
+	  	document.write("<br><br><strong><span style='font-size:12px;'>Percent of Precincts Reporting:</strong> ");
+		document.write(w[h].getElementsByTagName("percentvote")[0].childNodes[0].nodeValue); 		
+	  	document.write("%</span><br>");
+		}
+
+	if (w[h].getElementsByTagName("timestamp")[0].childNodes[0].nodeValue!="NA") { 
+		document.write(" <br><em>(Updated ");
+		document.write(w[h].getElementsByTagName("timestamp")[0].childNodes[0].nodeValue); 
+		document.write(")</em>");
+		}		
+
+	document.write("<br><br><strong>Candidates:</strong> ");		
+	
+	if (w[h].getElementsByTagName("name")[0].childNodes[0].nodeValue=="none" || w[h].getElementsByTagName("name")[0].childNodes[0].nodeValue=="NA") {	
+				document.write("<br><center>There are no candidates at this time.</center><br><br>");		
+		}
+
+		else {
+
+			document.write("<ul data-role=\"listview\" data-inset=\"true\">");
+			var x=w[h].getElementsByTagName("candidate");
+			for (i=0;i<x.length;i++)
+				{
+				document.write("<li><a data-ajax=\"false\" href=\"candidate.html?id=");
+				document.write(x[i].getElementsByTagName("nameid")[0].childNodes[0].nodeValue);
+				document.write(".xml&origin=candidates.html&originid=");
+				document.write(id);
+				document.write("&race=");
+				document.write(race);
+				document.write("&distno=");
+				document.write(w[h].getElementsByTagName("distno")[0].childNodes[0].nodeValue);	
+				document.write("&distnumber=");
+				document.write(w[h].getElementsByTagName("distnumber")[0].childNodes[0].nodeValue);					
+				document.write("\">");
+											
+				document.write(x[i].getElementsByTagName("name")[0].childNodes[0].nodeValue);  
+      
+                if (x[i].getElementsByTagName("party")[0].childNodes[0].nodeValue!="NA") {
+                                              document.write(" (");
+                                              document.write(x[i].getElementsByTagName("party")[0].childNodes[0].nodeValue);
+                                              document.write(") ");
+                                              }
+                                              
+				if (x[i].getElementsByTagName("incumbent")[0].childNodes[0].nodeValue=="Yes") {	
+							document.write("<em> (Inc.)</em>");		
+					}				
+
+					if (x[i].getElementsByTagName("win")[0].childNodes[0].nodeValue=="Yes") {			
+								document.write("<br><span style=\"color:#089508\">");								
+								document.write(x[i].getElementsByTagName("vote")[0].childNodes[0].nodeValue);				
+								document.write(" (");						
+								document.write(x[i].getElementsByTagName("percent")[0].childNodes[0].nodeValue);								
+								document.write("%) &#x2713;");										
+								document.write("</span>");													
+						}
+			
+					else if (w[h].getElementsByTagName("vote")[0].childNodes[0].nodeValue!="NA") {				
+								document.write("<br>");
+								document.write(x[i].getElementsByTagName("vote")[0].childNodes[0].nodeValue);				
+								document.write(" (");						
+								document.write(x[i].getElementsByTagName("percent")[0].childNodes[0].nodeValue);								
+								document.write("%)");										
+						}	
+								
+				document.write("</a></li>");										
+				}
+			document.write("</ul>");
+			
+		}
+		
+	document.write("<br><ul data-role=\"listview\" data-inset=\"true\"><li><a data-ajax=\"false\" href=\"#\" onClick=\"window.open('");
+	document.write(w[h].getElementsByTagName("maplink")[0].childNodes[0].nodeValue);
+	document.write("','_blank', 'EnableViewPortScale=yes');\" data-ajax=\"false\">Map</a></li>");
+    
+	document.write("<li><a data-ajax=\"false\" href=\"analysis_from_candidates.html?id=");
+	document.write(id);		
+	document.write("&distno=");			
+	document.write(w[h].getElementsByTagName("distno")[0].childNodes[0].nodeValue);
+	document.write("&race=");
+	document.write(race);	
+		document.write("&distno=");
+		document.write(w[h].getElementsByTagName("distno")[0].childNodes[0].nodeValue);	
+		document.write("&distnumber=");
+		document.write(w[h].getElementsByTagName("distnumber")[0].childNodes[0].nodeValue);	
+	document.write("\">Analysis</a></li></ul>");				
+		
+	document.write("</div>");
+  }
+ 
+</script>  
+
+</ul>
+
+<div id="test"></div>
+
+<a href="javascript:document.location.href=getBackUrl();" data-ajax="false" data-role="button" data-theme="b">Back to Elections</a></p>				
+
+</div><!-- /content -->
+
+<div id="copyright">Copyright Gongwer News Service, Inc. All Rights Reserved.</div>
+
+	<div data-role="footer" class="nav-glyphish-example" data-id="foo1" data-position="fixed" >
+		<div data-role="navbar" class="nav-glyphish-example" data-grid="d">
+		<center><ul>
+			<li><a href="index.html" id="home" data-icon="custom" data-ajax="false" data-theme="b">Home</a></li>
+			<li><a href="contact.html" id="email" data-icon="custom" data-ajax="false" data-theme="b">Contact</a></li>
+			<li><a href="about.html" id="about" data-icon="custom" data-ajax="false" data-theme="b">About</a></li>            
+			<li><a href="search.html" id="search" data-icon="custom" data-ajax="false" data-theme="b">Search</a></li>
+			<li><a href="social.html" id="social" data-icon="custom" data-ajax="false" data-theme="b">Social</a></li>
+   		</ul></center>
+		</div>                
+    </div><!-- /footer -->
+    
+</div><!-- /page -->
+
+</body>
+</html>

@@ -1,0 +1,158 @@
+<!DOCTYPE html> 
+<html> 
+
+<head> 
+<title>Gongwer Election App</title> 
+<meta name="viewport" content="width=device-width, initial-scale=1"> 	    
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-touch-fullscreen" content="yes" />   
+<script src="scripts/jquery-1.9.1.min.js"></script>
+<script src="scripts/jquery.mobile-1.4.2.min.js"></script>
+<script type="text/javascript" src="cordova.js"></script>
+<link rel="stylesheet" href="scripts/jquery.mobile-1.4.2.min.css" />
+<link rel="stylesheet" type="text/css" href="style.css">
+
+<script type="text/javascript" src="ga.js"></script>
+<script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-38636805-24']);
+    _gaq.push(['_trackPageview', 'analysis']);
+</script> 
+
+<script type="text/javascript">
+    
+    function overall() { if ((id == "1201.xml") || (id == "1101.xml") || (id == "301.xml") || (id == "201.xml")) { document.getElementById('overall').style.display = "block"; } }
+    
+    function getUrlVars() {
+        var vars = {};
+        var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
+                                                 vars[key] = value;
+                                                 });
+                                                 return vars;
+    }
+
+var id = getUrlVars()["id"];
+var race = getUrlVars()["race"];
+
+function getBackUrl()
+{
+    if (race == "General") {	var backurl = "generalelections.html"; return backurl; }
+    else if (race == "Primary") {	var backurl = "primaryelections.html"; return backurl; }
+}
+
+function getUrlOA()
+{
+    if (id == "1201.xml") {	var overall_analysis = "analysis_house.html?id=" + id + "&race=" + race; return overall_analysis; }
+    if (id == "1101.xml") {	var overall_analysis = "analysis_senate.html?id=" + id + "&race=" + race; return overall_analysis; }
+    if (id == "301.xml") {	var overall_analysis = "analysis_house.html?id=" + id + "&race=" + race; return overall_analysis; }
+    if (id == "201.xml") {	var overall_analysis = "analysis_senate.html?id=" + id + "&race=" + race; return overall_analysis; }
+}
+
+function getUrlSR()
+{
+    var strong_republican = "analysis_strong_republican.html?id=" + id + "&race=" + race;
+    return strong_republican;
+}
+
+function getUrlLR()
+{
+    var lean_republican = "analysis_lean_republican.html?id=" + id + "&race=" + race;
+    return lean_republican;
+}
+
+
+function getUrlTR()
+{
+    var tilt_republican = "analysis_tilt_republican.html?id=" + id + "&race=" + race;
+    return tilt_republican;
+}
+
+function getUrlT()
+{
+    var tossup = "analysis_tossup.html?id=" + id + "&race=" + race;
+    return tossup;
+}
+
+function getUrlTD()
+{
+    var tilt_democratic = "analysis_tilt_democratic.html?id=" + id + "&race=" + race;
+    return tilt_democratic;
+}
+
+function getUrlLD()
+{
+    var lean_democratic = "analysis_lean_democratic.html?id=" + id + "&race=" + race;
+    return lean_democratic;
+}
+
+function getUrlSD()
+{
+    var strong_democratic = "analysis_strong_democratic.html?id=" + id + "&race=" + race;
+    return strong_democratic;
+}
+</script>
+
+<style>
+
+.overall_analysis { background-color:#333; }
+.strong_republican { background-color:#b40e16; }
+.lean_republican { background-color:#f15558; }
+.tilt_republican { background-color:#f3acad; }
+.tossup { background-color:#bfbfbf; }
+.strong_democratic { background-color:#1e1479; }
+.lean_democratic { background-color:#8d8ddc; }
+.tilt_democratic { background-color:#d2d2f8; }
+
+.ui-page-theme-a .ui-btn, html .ui-bar-a .ui-btn, html .ui-body-a .ui-btn, html body .ui-group-theme-a .ui-btn, html head+body .ui-btn.ui-btn-a, .ui-page-theme-a .ui-btn:visited, html .ui-bar-a .ui-btn:visited, html .ui-body-a .ui-btn:visited, html body .ui-group-theme-a .ui-btn:visited, html head+body .ui-btn.ui-btn-a:visited {
+background-color: transparent;
+border-color: #ddd;
+color: #fff;
+text-shadow: none;
+}
+
+</style>
+
+</head> 
+
+<body onload="overall()">
+
+<div data-role="page" style="background-color:#185e93;">
+<div id="top_region"><center><a href="index.html" data-ajax="false" ><img src="images/gongwer-header-logo-mi.png"></a></center></div>
+<div data-role="content" style="padding:10px; width:95%; margin:0px auto;"><br>
+<center><script type="text/javascript" src="https://g.adspeed.net/ad.php?do=js&zid=64756&oid=13041&wd=-1&ht=-1&target=_blank"></script></center>
+<h1 align="center">Analysis</h1>
+
+<div class="overall_analysis" style="display:none;" id="overall"><ul data-inset="true" data-role="listview"><li><a data-ajax="false" href="javascript:document.location.href=getUrlOA();">Overall Analysis</a></li></ul></div>
+
+<ul data-inset="true" data-role="listview">
+    <li class="strong_republican"><a data-ajax="false" href="javascript:document.location.href=getUrlSR();">Solid Republican</a></li>
+    <li class="lean_republican"><a data-ajax="false" href="javascript:document.location.href=getUrlLR();">Likely Republican</a></li>
+	<li class="tilt_republican"><a data-ajax="false" href="javascript:document.location.href=getUrlTR();">Tilt Republican</a></li>
+    <li class="tossup"><a data-ajax="false" href="javascript:document.location.href=getUrlT();">Tossup</a></li>
+	<li class="tilt_democratic"><a data-ajax="false" href="javascript:document.location.href=getUrlTD();">Tilt Democratic</a></li>
+    <li class="lean_democratic"><a data-ajax="false" href="javascript:document.location.href=getUrlLD();">Likely Democratic</a></li>
+    <li class="strong_democratic"><a data-ajax="false" href="javascript:document.location.href=getUrlSD();">Solid Democratic</a></li>
+</ul>
+
+<a href="javascript:document.location.href=getBackUrl();" data-ajax="false" data-role="button" data-theme="b">Back to Elections</a></p>
+
+</div><!-- /content -->
+
+<div id="copyright">Copyright Gongwer News Service, Inc. All Rights Reserved.</div>
+
+	<div data-role="footer" class="nav-glyphish-example" data-id="foo1" data-position="fixed" >
+		<div data-role="navbar" class="nav-glyphish-example" data-grid="d">
+		<center><ul>
+			<li><a href="index.html" id="home" data-icon="custom" data-ajax="false" data-theme="b">Home</a></li>
+			<li><a href="contact.html" id="email" data-icon="custom" data-ajax="false" data-theme="b">Contact</a></li>
+			<li><a href="about.html" id="about" data-icon="custom" data-ajax="false" data-theme="b">About</a></li>            
+			<li><a href="search.html" id="search" data-icon="custom" data-ajax="false" data-theme="b">Search</a></li>
+			<li><a href="social.html" id="social" data-icon="custom" data-ajax="false" data-theme="b">Social</a></li>
+   		</ul></center>
+		</div>                
+    </div><!-- /footer -->
+    
+</div><!-- /page -->
+
+</body>
+</html>
